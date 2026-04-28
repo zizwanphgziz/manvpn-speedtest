@@ -2,38 +2,115 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>MANVPN Speedtest</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+<!-- INTRO SCREEN -->
+<div id="introScreen">
+    <div class="intro-overlay"></div>
 
-<h1>MANVPN SPEEDTEST</h1>
+    <div class="intro-content">
+        <img src="assets/logo.png" alt="MANVPN Logo" class="intro-logo">
 
-<div class="meter">
-<div id="speed">0</div>
-<span>Mbps</span>
+        <h1 class="intro-title">MANVPN</h1>
+
+        <p class="intro-tagline">NO DATA NO PROBLEM</p>
+    </div>
 </div>
 
-<button id="startBtn">START TEST</button>
+<!-- MAIN APP -->
+<div id="appScreen" class="hidden">
 
-<div class="stats">
-<p>Ping: <span id="ping">--</span></p>
-<p>Download: <span id="download">--</span></p>
-<p>Upload: <span id="upload">--</span></p>
-</div>
+    <!-- TOP BAR -->
+    <header class="top-bar">
+        <div class="brand-wrap">
+            <img src="assets/logo.png" class="mini-logo">
+            <div>
+                <h2 class="brand-name">MANVPN</h2>
+                <span class="brand-sub">SPEEDTEST</span>
+            </div>
+        </div>
+    </header>
 
-<div class="links">
-<a href="#">Telegram</a>
-<a href="#">WhatsApp</a>
-</div>
+    <!-- BACKGROUND LOGO -->
+    <div class="bg-logo"></div>
+
+    <!-- MAIN METER SECTION -->
+    <main class="main-wrap">
+
+        <section class="meter-card">
+
+            <div class="meter-top-label">
+                <span id="testMode">READY</span>
+            </div>
+
+            <!-- HYBRID METER -->
+            <div class="meter-shell">
+
+                <!-- circle ring -->
+                <div class="meter-ring"></div>
+
+                <!-- needle -->
+                <div class="needle-wrap">
+                    <div id="needle" class="needle"></div>
+                </div>
+
+                <!-- center text -->
+                <div class="meter-center">
+                    <div id="speedValue">0</div>
+                    <small>Mbps</small>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- STATS -->
+        <section class="stats-card">
+
+            <div class="stat-box">
+                <span class="label">PING</span>
+                <strong id="ping">--</strong>
+            </div>
+
+            <div class="stat-box">
+                <span class="label">DOWNLOAD</span>
+                <strong id="download">--</strong>
+            </div>
+
+            <div class="stat-box">
+                <span class="label">UPLOAD</span>
+                <strong id="upload">--</strong>
+            </div>
+
+        </section>
+
+        <!-- START BUTTON -->
+        <section class="action-wrap">
+            <button id="startBtn">START TEST</button>
+        </section>
+
+    </main>
+
+    <!-- FLOATING SOCIAL -->
+    <div class="floating-social">
+
+        <a href="https://t.me/yourtelegram" target="_blank" class="social-btn telegram">
+            TG
+        </a>
+
+        <a href="https://wa.me/60123456789" target="_blank" class="social-btn whatsapp">
+            WA
+        </a>
+
+    </div>
 
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
