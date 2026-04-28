@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>MANVPN Speedtest</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -10,14 +10,14 @@
 
 <div class="app">
 
-    <!-- TOP -->
+    <!-- TOP BAR -->
     <div class="topbar">
         <div class="close">✕</div>
         <div class="title">SPEEDTEST</div>
         <div class="menu">☰</div>
     </div>
 
-    <!-- BOXES -->
+    <!-- TOP LIVE BOXES -->
     <div class="stats-top">
 
         <div class="box download-box">
@@ -32,7 +32,7 @@
 
     </div>
 
-    <!-- INFO -->
+    <!-- MINI INFO -->
     <div class="mini-info">
         <span>Ping <b id="pingValue">--</b></span>
         <span>Jitter <b id="jitterValue">--</b></span>
@@ -60,7 +60,7 @@
             <div class="needle" id="needle"></div>
             <div class="needle-center"></div>
 
-            <!-- VALUE -->
+            <!-- LIVE VALUE -->
             <div class="meter-value">
                 <span id="speedValue">0.00</span>
                 <small>Mbps</small>
@@ -90,7 +90,7 @@
 
     </div>
 
-    <!-- BUTTON -->
+    <!-- START BUTTON -->
     <button id="startBtn">START</button>
 
 </div>
