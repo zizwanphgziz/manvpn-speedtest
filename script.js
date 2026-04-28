@@ -1,125 +1,204 @@
-const startBtn = document.getElementById("startBtn");
-const speedValue = document.getElementById("speedValue");
-const needle = document.getElementById("needle");
+/* =========================
+   MANVPN SPEEDTEST FULL FIX
+   SCRIPT.JS
+========================= */
 
-const pingValue = document.getElementById("pingValue");
-const downValue = document.getElementById("downValue");
-const upValue = document.getElementById("upValue");
-const statusText = document.getElementById("statusText");
+const startBtn     = document.getElementById("startBtn");
+const speedValue   = document.getElementById("speedValue");
+const needle       = document.getElementById("needle");
+
+const pingValue    = document.getElementById("pingValue");
+const jitterValue  = document.getElementById("jitterValue");
+
+const pingCard     = document.getElementById("pingCard");
+const downValue    = document.getElementById("downValue");
+const upValue      = document.getElementById("upValue");
+
+const downTop      = document.getElementById("downTop");
+const upTop        = document.getElementById("upTop");
+
+const statusText   = document.getElementById("statusText");
 
 let running = false;
 
-/* ===== SCALE =====
-0 Mbps = -120deg
-1000 Mbps = +120deg
-*/
-function speedToDeg(speed) {
+/* =========================
+   SCALE
+   0 Mbps   = -120deg
+   1000 Mbps = +120deg
+========================= */
+function speedToDeg(speed){
+
     let max = 1000;
-    if (speed > max) speed = max;
+
+    if(speed < 0) speed = 0;
+    if(speed > max) speed = max;
+
     return -120 + (speed / max) * 240;
 }
 
-function setNeedle(speed) {
+/* ========================= */
+function setNeedle(speed){
+
     const deg = speedToDeg(speed);
-    needle.style.transform = `translateX(-50%) rotate(${deg}deg)`;
+
+    needle.style.transform =
+        `translateX(-50%) rotate(${deg}deg)`;
 }
 
-function setSpeed(num) {
-    speedValue.innerText = num.toFixed(2);
+function setSpeed(num){
+    speedValue.innerText = Number(num).toFixed(2);
 }
 
-function sleep(ms) {
-    return new Promise(r => setTimeout(r, ms));
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-/* smooth animated move */
-async function animateTo(target, duration = 600) {
+/* =========================
+   SMOOTH MOVE
+========================= */
+async function animateTo(target, duration = 700){
+
     let start = parseFloat(speedValue.innerText) || 0;
-    let frames = duration / 16;
-    for (let i = 0; i <= frames; i++) {
+
+    let frames = Math.floor(duration / 16);
+
+    for(let i=0; i<=frames; i++){
+
         let progress = i / frames;
-        let val = start + (target - start) * progress;
-        setSpeed(val);
-        setNeedle(val);
+
+        /* smooth easing */
+        let ease = progress * progress * (3 - 2 * progress);
+
+        let value = start + (target - start) * ease;
+
+        setSpeed(value);
+        setNeedle(value);
+
         await sleep(16);
     }
 }
 
-/* random realistic fluctuation */
-async function fluctuate(min, max, loops = 25) {
-    let current = min;
-    for (let i = 0; i < loops; i++) {
-        current += (Math.random() * 80 - 30);
-        if (current < min) current = min;
-        if (current > max) current = max;
+/* =========================
+   REALISTIC FLUCTUATION
+========================= */
+async function fluctuate(base, max, loops = 18){
+
+    let current = base;
+
+    for(let i=0; i<loops; i++){
+
+        current += (Math.random() * 70) - 28;
+
+        if(current < base * 0.6) current = base * 0.6;
+        if(current > max) current = max;
+
         setSpeed(current);
         setNeedle(current);
+
         await sleep(140);
     }
+
     return current;
 }
 
-async function runTest() {
-    if (running) return;
+/* =========================
+   START TEST
+========================= */
+async function runTest(){
+
+    if(running) return;
+
     running = true;
 
-    startBtn.innerText = "TESTING...";
     startBtn.disabled = true;
+    startBtn.innerText = "TESTING...";
+
+    /* RESET */
+    statusText.innerText = "READY";
 
     pingValue.innerText = "--";
+    jitterValue.innerText = "--";
+
+    pingCard.innerText = "--";
     downValue.innerText = "--";
     upValue.innerText = "--";
 
-    /* reset */
-    statusText.innerText = "READY";
-    await animateTo(0, 400);
+    downTop.innerText = "--";
+    upTop.innerText = "--";
 
-    /* ===== DOWNLOAD ===== */
+    await animateTo(0, 500);
+
+    /* =====================
+       PING
+    ===================== */
+    let ping = Math.floor(Math.random() * 22) + 8;
+    let jitter = Math.floor(Math.random() * 5) + 1;
+
+    pingValue.innerText = ping;
+    jitterValue.innerText = jitter;
+
+    pingCard.innerText = ping + " ms";
+
+    /* =====================
+       DOWNLOAD
+    ===================== */
     statusText.innerText = "DOWNLOAD";
 
-    // dramatic sweep
-    await animateTo(320, 700);
-    await animateTo(120, 400);
+    /* dramatic sweep */
+    await animateTo(340, 850);
+    await animateTo(110, 450);
 
-    let finalDown = Math.floor(Math.random() * 250) + 120;
-    await fluctuate(100, finalDown + 40, 18);
-    await animateTo(finalDown, 500);
+    let finalDown =
+        Math.floor(Math.random() * 260) + 140;
 
-    let ping = Math.floor(Math.random() * 35) + 18;
+    await fluctuate(120, finalDown + 40, 18);
 
-    pingValue.innerText = ping + " ms";
+    await animateTo(finalDown, 700);
+
     downValue.innerText = finalDown + " Mbps";
+    downTop.innerText   = finalDown;
 
     await sleep(900);
 
-    /* ===== UPLOAD ===== */
+    /* =====================
+       UPLOAD
+    ===================== */
     statusText.innerText = "UPLOAD";
 
-    await animateTo(30, 400);
+    await animateTo(45, 450);
 
-    let finalUp = Math.floor(finalDown / 8) + Math.floor(Math.random() * 12);
-    if (finalUp < 10) finalUp = 10;
+    let finalUp =
+        Math.floor(finalDown / 8) +
+        Math.floor(Math.random() * 18);
 
-    await fluctuate(10, finalUp + 10, 16);
-    await animateTo(finalUp, 500);
+    if(finalUp < 10) finalUp = 10;
+
+    await fluctuate(12, finalUp + 8, 16);
+
+    await animateTo(finalUp, 650);
 
     upValue.innerText = finalUp + " Mbps";
+    upTop.innerText   = finalUp;
 
     await sleep(700);
 
-    /* ===== COMPLETE ===== */
+    /* =====================
+       COMPLETE
+       return to download score
+    ===================== */
     statusText.innerText = "COMPLETE";
 
-    // return needle to download result
-    await animateTo(finalDown, 600);
+    await animateTo(finalDown, 700);
 
     startBtn.innerText = "RETEST";
     startBtn.disabled = false;
+
     running = false;
 }
 
+/* ========================= */
 startBtn.addEventListener("click", runTest);
 
-/* idle state */
+/* IDLE POSITION = ZERO LEFT */
 setNeedle(0);
 setSpeed(0);
