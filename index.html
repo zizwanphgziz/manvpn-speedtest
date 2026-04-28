@@ -1,1 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MANVPN Speedtest</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<div id="splash">
+    <img src="assets/logo.png" class="logo">
+    <h1 class="title">MANVPN SPEEDTEST</h1>
+    <p class="tagline">NO DATA NO PROBLEM</p>
+</div>
+
+<div id="main" class="hidden">
+    <div class="bg-logo"></div>
+
+    <h1 class="main-title">MANVPN SPEEDTEST</h1>
+
+    <div class="meter">
+        <div class="circle">
+            <span id="speed">0</span>
+            <small>Mbps</small>
+        </div>
+    </div>
+
+    <button id="startBtn">START TEST</button>
+
+    <div class="info">
+        <p>Ping: <span id="ping">--</span> ms</p>
+        <p>Download: <span id="download">--</span> Mbps</p>
+        <p>Upload: <span id="upload">--</span> Mbps</p>
+    </div>
+
+    <div class="social">
+        <a href="https://t.me/yourtelegram" target="_blank">Telegram</a>
+        <a href="https://wa.me/60123456789" target="_blank">WhatsApp</a>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
