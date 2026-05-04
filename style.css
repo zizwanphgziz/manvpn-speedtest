@@ -43,7 +43,8 @@ html,body{
 .intro video{
     width:100%;
     height:100%;
-    object-fit:cover;
+    object-fit:contain;
+    background:#000;
 }
 
 .skip-btn{
@@ -81,6 +82,47 @@ html,body{
     gap:10px;
     opacity:1;
     transition:opacity 0.5s ease;
+    position:relative;
+}
+
+/* =========================
+   SOCIAL LINKS
+========================= */
+
+.social-links{
+    position:absolute;
+    top:max(14px,env(safe-area-inset-top,14px));
+    left:16px;
+    right:16px;
+    display:flex;
+    justify-content:space-between;
+    z-index:10;
+    pointer-events:none;
+}
+
+.social-btn{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform 0.15s ease,box-shadow 0.15s ease;
+    pointer-events:auto;
+}
+
+.social-btn:active{
+    transform:scale(0.9);
+}
+
+.tg-btn{
+    background:linear-gradient(135deg,#0088cc,#00aaee);
+    box-shadow:0 2px 12px rgba(0,136,204,0.4);
+}
+
+.wa-btn{
+    background:linear-gradient(135deg,#25d366,#128c7e);
+    box-shadow:0 2px 12px rgba(37,211,102,0.4);
 }
 
 .app.hidden{
@@ -98,18 +140,21 @@ html,body{
 }
 
 .logo{
-    height:clamp(64px,18vw,100px);
+    height:clamp(120px,35vw,180px);
     width:auto;
     filter:invert(1) brightness(1.15);
     object-fit:contain;
 }
 
 .tagline{
-    font-size:clamp(13px,3.5vw,16px);
-    letter-spacing:4px;
-    color:rgba(255,255,255,0.55);
-    margin-top:4px;
-    font-weight:500;
+    font-family:'Orbitron',monospace;
+    font-size:clamp(11px,3vw,14px);
+    letter-spacing:5px;
+    color:#00d4ff;
+    margin-top:8px;
+    font-weight:700;
+    text-shadow:0 0 8px rgba(0,212,255,0.5),0 0 20px rgba(0,212,255,0.2);
+    text-transform:uppercase;
 }
 
 /* =========================
@@ -123,11 +168,13 @@ html,body{
 }
 
 .status-text{
-    font-size:clamp(12px,3.2vw,15px);
+    font-family:'Orbitron',monospace;
+    font-size:clamp(11px,3vw,14px);
     letter-spacing:4px;
     color:#00d4ff;
     font-weight:600;
     margin-bottom:6px;
+    text-shadow:0 0 8px rgba(0,212,255,0.3);
 }
 
 .progress-bar{
@@ -167,7 +214,7 @@ html,body{
     font-size:11px;
     font-weight:600;
     fill:rgba(255,255,255,0.5);
-    font-family:inherit;
+    font-family:'Orbitron',monospace;
 }
 
 .speed-display{
@@ -182,18 +229,22 @@ html,body{
 
 .speed-num{
     display:block;
-    font-size:clamp(36px,10vw,52px);
-    font-weight:200;
+    font-family:'Orbitron',monospace;
+    font-size:clamp(32px,9vw,48px);
+    font-weight:700;
     line-height:1;
-    letter-spacing:-1px;
+    letter-spacing:1px;
+    text-shadow:0 0 12px rgba(0,212,255,0.4);
 }
 
 .speed-unit{
     display:block;
-    font-size:clamp(11px,3vw,14px);
-    color:rgba(255,255,255,0.6);
-    margin-top:2px;
-    letter-spacing:1px;
+    font-family:'Orbitron',monospace;
+    font-size:clamp(10px,2.5vw,12px);
+    color:rgba(0,212,255,0.7);
+    margin-top:4px;
+    letter-spacing:3px;
+    font-weight:400;
 }
 
 /* =========================
@@ -230,22 +281,26 @@ html,body{
 .jitter-icon{color:#f59e0b;}
 
 .result-label{
-    font-size:10px;
+    font-family:'Orbitron',monospace;
+    font-size:9px;
     letter-spacing:2px;
     color:rgba(255,255,255,0.45);
     margin-bottom:4px;
 }
 
 .result-value{
+    font-family:'Orbitron',monospace;
     font-size:clamp(18px,5vw,24px);
     font-weight:700;
     line-height:1.2;
+    text-shadow:0 0 8px rgba(0,212,255,0.3);
 }
 
 .result-unit{
-    font-size:10px;
+    font-family:'Orbitron',monospace;
+    font-size:9px;
     color:rgba(255,255,255,0.4);
-    letter-spacing:1px;
+    letter-spacing:2px;
 }
 
 /* =========================
@@ -273,9 +328,10 @@ html,body{
 }
 
 .conn-label{
-    font-size:11px;
+    font-family:'Orbitron',monospace;
+    font-size:10px;
     letter-spacing:2px;
-    color:rgba(255,255,255,0.4);
+    color:rgba(0,212,255,0.5);
     font-weight:600;
     flex-shrink:0;
 }
@@ -299,13 +355,14 @@ html,body{
     height:clamp(48px,12vw,60px);
     border:none;
     border-radius:16px;
-    font-size:clamp(16px,4.5vw,20px);
+    font-family:'Orbitron',monospace;
+    font-size:clamp(14px,4vw,18px);
     font-weight:800;
-    letter-spacing:2px;
+    letter-spacing:4px;
     cursor:pointer;
     background:linear-gradient(135deg,#1c73ff,#00d4ff);
     color:#fff;
-    box-shadow:0 4px 24px rgba(0,180,255,0.25);
+    box-shadow:0 4px 24px rgba(0,180,255,0.25),0 0 40px rgba(0,180,255,0.1);
     transition:transform 0.15s ease,box-shadow 0.15s ease,opacity 0.15s ease;
     flex-shrink:0;
     margin-top:auto;
@@ -335,8 +392,8 @@ html,body{
         padding-bottom:8px;
     }
     .brand{ padding:2px 0 0; }
-    .logo{ height:48px; }
-    .tagline{ font-size:11px; margin-top:2px; }
+    .logo{ height:80px; }
+    .tagline{ font-size:9px; margin-top:2px; letter-spacing:3px; }
     .gauge-wrap{ max-width:280px; }
     .speed-num{ font-size:32px; }
     .result-card{ padding:8px 6px; }
@@ -377,7 +434,7 @@ html,body{
         gap:8px;
     }
     .brand{ width:100%; padding:0; }
-    .logo{ height:24px; }
+    .logo{ height:40px; }
     .status-section{ width:100%; }
     .gauge-wrap{
         max-width:220px;

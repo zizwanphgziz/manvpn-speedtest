@@ -13,6 +13,7 @@ const statusText   = document.getElementById('statusText');
 const progressFill = document.getElementById('progressFill');
 
 const gaugeArc     = document.getElementById('gaugeArc');
+const gaugeArcGlow = document.getElementById('gaugeArcGlow');
 const gaugeNeedle  = document.getElementById('gaugeNeedle');
 const speedNum     = document.getElementById('speedNum');
 
@@ -87,7 +88,9 @@ function speedToFraction(speed){
 
 function updateGaugeVisual(speed){
     var fraction = speedToFraction(speed);
-    gaugeArc.style.strokeDashoffset = ARC_LENGTH * (1 - fraction);
+    var offset = ARC_LENGTH * (1 - fraction);
+    gaugeArc.style.strokeDashoffset = offset;
+    gaugeArcGlow.style.strokeDashoffset = offset;
 
     var angleDeg = 120 + fraction * 300;
     var rad = angleDeg * Math.PI / 180;
