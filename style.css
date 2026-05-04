@@ -98,16 +98,16 @@ html,body{
 }
 
 .logo{
-    height:clamp(36px,9vw,56px);
+    height:clamp(64px,18vw,100px);
     width:auto;
     filter:invert(1) brightness(1.15);
     object-fit:contain;
 }
 
 .tagline{
-    font-size:clamp(9px,2.5vw,12px);
-    letter-spacing:3px;
-    color:rgba(255,255,255,0.45);
+    font-size:clamp(13px,3.5vw,16px);
+    letter-spacing:4px;
+    color:rgba(255,255,255,0.55);
     margin-top:4px;
     font-weight:500;
 }
@@ -172,10 +172,11 @@ html,body{
 
 .speed-display{
     position:absolute;
-    bottom:12%;
+    top:52%;
     left:0;
     right:0;
     text-align:center;
+    transform:translateY(-50%);
     pointer-events:none;
 }
 
@@ -334,8 +335,8 @@ html,body{
         padding-bottom:8px;
     }
     .brand{ padding:2px 0 0; }
-    .logo{ height:28px; }
-    .tagline{ font-size:8px; margin-top:2px; }
+    .logo{ height:48px; }
+    .tagline{ font-size:11px; margin-top:2px; }
     .gauge-wrap{ max-width:280px; }
     .speed-num{ font-size:32px; }
     .result-card{ padding:8px 6px; }

@@ -43,54 +43,54 @@
 
     <!-- GAUGE -->
     <div class="gauge-wrap">
-        <svg viewBox="0 0 300 195" class="gauge-svg" id="gaugeSvg">
+        <svg viewBox="0 0 300 275" class="gauge-svg" id="gaugeSvg">
             <defs>
-                <linearGradient id="arcGrad" x1="0%" y1="50%" x2="100%" y2="50%">
-                    <stop offset="0%" stop-color="#1c73ff"/>
-                    <stop offset="40%" stop-color="#00d4ff"/>
-                    <stop offset="100%" stop-color="#00ff88"/>
+                <linearGradient id="arcGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#6b21a8"/>
+                    <stop offset="40%" stop-color="#1c73ff"/>
+                    <stop offset="100%" stop-color="#00d4ff"/>
                 </linearGradient>
                 <filter id="glow">
                     <feGaussianBlur stdDeviation="2.5" result="g"/>
                     <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
                 </filter>
                 <filter id="needleGlow">
-                    <feGaussianBlur stdDeviation="4" result="g"/>
+                    <feGaussianBlur stdDeviation="3" result="g"/>
                     <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
                 </filter>
             </defs>
 
+            <!-- Tick track (decorative dots) -->
+            <path d="M 96 243.5 A 108 108 0 1 1 204 243.5"
+                  fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2"
+                  stroke-dasharray="1.5 12.6" stroke-linecap="round"/>
+
             <!-- Background arc -->
-            <path d="M 63.4 190 A 100 100 0 1 1 236.6 190"
+            <path d="M 95 245.3 A 110 110 0 1 1 205 245.3"
                   fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14" stroke-linecap="round"/>
 
             <!-- Active arc -->
-            <path id="gaugeArc" d="M 63.4 190 A 100 100 0 1 1 236.6 190"
+            <path id="gaugeArc" d="M 95 245.3 A 110 110 0 1 1 205 245.3"
                   fill="none" stroke="url(#arcGrad)" stroke-width="14" stroke-linecap="round"
-                  stroke-dasharray="419" stroke-dashoffset="419" filter="url(#glow)"/>
+                  stroke-dasharray="576" stroke-dashoffset="576" filter="url(#glow)"/>
 
             <!-- Scale labels -->
-            <text x="44" y="198" class="scale-text" text-anchor="middle">0</text>
-            <text x="22" y="141" class="scale-text" text-anchor="middle">100</text>
-            <text x="41" y="78" class="scale-text" text-anchor="middle">250</text>
-            <text x="150" y="32" class="scale-text" text-anchor="middle">500</text>
-            <text x="259" y="78" class="scale-text" text-anchor="middle">750</text>
-            <text x="278" y="141" class="scale-text" text-anchor="middle">1G</text>
-
-            <!-- Tick marks -->
-            <line x1="63" y1="190" x2="72" y2="185" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-            <line x1="30" y1="133" x2="40" y2="135" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-            <line x1="50" y1="72" x2="59" y2="78" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-            <line x1="150" y1="40" x2="150" y2="50" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-            <line x1="250" y1="72" x2="241" y2="78" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-            <line x1="270" y1="133" x2="260" y2="135" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <text x="83" y="270" class="scale-text" text-anchor="middle">0</text>
+            <text x="25" y="205" class="scale-text" text-anchor="middle">5</text>
+            <text x="20" y="118" class="scale-text" text-anchor="middle">10</text>
+            <text x="68" y="46" class="scale-text" text-anchor="middle">50</text>
+            <text x="150" y="18" class="scale-text" text-anchor="middle">100</text>
+            <text x="232" y="46" class="scale-text" text-anchor="middle">250</text>
+            <text x="280" y="118" class="scale-text" text-anchor="middle">500</text>
+            <text x="275" y="205" class="scale-text" text-anchor="middle">750</text>
+            <text x="218" y="270" class="scale-text" text-anchor="middle">1k</text>
 
             <!-- Needle -->
-            <line id="gaugeNeedle" x1="150" y1="140" x2="67.7" y2="187.5"
+            <line id="gaugeNeedle" x1="150" y1="150" x2="100" y2="236.6"
                   stroke="white" stroke-width="2.5" stroke-linecap="round" filter="url(#needleGlow)"/>
 
             <!-- Center dot -->
-            <circle cx="150" cy="140" r="5" fill="white" filter="url(#glow)"/>
+            <circle cx="150" cy="150" r="6" fill="#00d4ff" filter="url(#glow)"/>
         </svg>
 
         <!-- Speed display overlaid on gauge -->
@@ -130,10 +130,6 @@
 
     <!-- CONNECTION INFO -->
     <div class="conn-info">
-        <div class="conn-row">
-            <span class="conn-label">ISP</span>
-            <span class="conn-value" id="ispInfo">--</span>
-        </div>
         <div class="conn-row">
             <span class="conn-label">SERVER</span>
             <span class="conn-value" id="serverInfo">--</span>

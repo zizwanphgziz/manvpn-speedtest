@@ -21,7 +21,6 @@ const ulResult     = document.getElementById('ulResult');
 const pingResult   = document.getElementById('pingResult');
 const jitterResult = document.getElementById('jitterResult');
 
-const ispInfo      = document.getElementById('ispInfo');
 const serverInfo   = document.getElementById('serverInfo');
 const ipInfo       = document.getElementById('ipInfo');
 
@@ -32,11 +31,12 @@ const CF_DOWN = 'https://speed.cloudflare.com/__down';
 const CF_UP   = 'https://speed.cloudflare.com/__up';
 const CF_META = 'https://speed.cloudflare.com/meta';
 
-const ARC_LENGTH   = 419;
+const ARC_LENGTH   = 576;
 const MAX_SPEED    = 1000;
 const GAUGE_CX     = 150;
-const GAUGE_CY     = 140;
-const NEEDLE_LEN   = 95;
+const GAUGE_CY     = 150;
+const NEEDLE_LEN   = 100;
+var SCALE_VALUES   = [0, 5, 10, 50, 100, 250, 500, 750, 1000];
 
 let running = false;
 let currentSpeed = 0;
@@ -74,25 +74,28 @@ introVideo.play().catch(function(){
 /* =========================
    GAUGE HELPERS
 ========================= */
-function speedToAngle(speed){
-    var s = Math.max(0, Math.min(speed, MAX_SPEED));
-    return 210 - (s / MAX_SPEED) * 240;
+function speedToFraction(speed){
+    speed = Math.max(0, Math.min(speed, MAX_SPEED));
+    for(var i = 1; i < SCALE_VALUES.length; i++){
+        if(speed <= SCALE_VALUES[i]){
+            var seg = (speed - SCALE_VALUES[i-1]) / (SCALE_VALUES[i] - SCALE_VALUES[i-1]);
+            return ((i-1) + seg) / (SCALE_VALUES.length - 1);
+        }
+    }
+    return 1;
 }
 
 function updateGaugeVisual(speed){
-    /* Arc fill */
-    var ratio = Math.max(0, Math.min(speed / MAX_SPEED, 1));
-    gaugeArc.style.strokeDashoffset = ARC_LENGTH * (1 - ratio);
+    var fraction = speedToFraction(speed);
+    gaugeArc.style.strokeDashoffset = ARC_LENGTH * (1 - fraction);
 
-    /* Needle */
-    var angleDeg = speedToAngle(speed);
+    var angleDeg = 120 + fraction * 300;
     var rad = angleDeg * Math.PI / 180;
     var x2 = GAUGE_CX + NEEDLE_LEN * Math.cos(rad);
-    var y2 = GAUGE_CY - NEEDLE_LEN * Math.sin(rad);
+    var y2 = GAUGE_CY + NEEDLE_LEN * Math.sin(rad);
     gaugeNeedle.setAttribute('x2', x2.toFixed(1));
     gaugeNeedle.setAttribute('y2', y2.toFixed(1));
 
-    /* Speed text */
     speedNum.textContent = speed < 10 ? speed.toFixed(2) : speed.toFixed(1);
 }
 
@@ -125,7 +128,7 @@ function sleep(ms){
 ========================= */
 function fetchMeta(){
     fetch(CF_META).then(function(r){ return r.json(); }).then(function(d){
-        ispInfo.textContent = d.asOrganization || '--';
+
         ipInfo.textContent  = d.clientIp || '--';
 
         var coloStr = '';
@@ -139,7 +142,7 @@ function fetchMeta(){
             (coloStr ? ' - ' + coloStr : '') +
             (location ? ' (' + location + ')' : '');
     }).catch(function(){
-        ispInfo.textContent    = '--';
+
         serverInfo.textContent = '--';
         ipInfo.textContent     = '--';
     });
