@@ -82,27 +82,23 @@ html,body{
     gap:4px;
     opacity:1;
     transition:opacity 0.5s ease;
-    position:relative;
 }
 
 /* =========================
    SOCIAL LINKS
 ========================= */
 
-.social-links{
-    position:absolute;
-    top:max(14px,env(safe-area-inset-top,14px));
-    left:16px;
-    right:16px;
+.tagline-row{
     display:flex;
-    justify-content:space-between;
-    z-index:10;
-    pointer-events:none;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:2px;
 }
 
 .social-btn{
-    width:36px;
-    height:36px;
+    width:28px;
+    height:28px;
     border-radius:50%;
     display:flex;
     align-items:center;
@@ -147,10 +143,10 @@ html,body{
 
 .tagline{
     font-family:'Orbitron',monospace;
-    font-size:clamp(11px,3vw,14px);
-    letter-spacing:5px;
+    font-size:clamp(10px,2.8vw,13px);
+    letter-spacing:4px;
     color:#00d4ff;
-    margin-top:2px;
+    margin:0;
     font-weight:700;
     text-shadow:0 0 8px rgba(0,212,255,0.5),0 0 20px rgba(0,212,255,0.2);
     text-transform:uppercase;
@@ -377,6 +373,11 @@ html,body{
     opacity:0.5;
     cursor:not-allowed;
     transform:none;
+}
+
+.start-btn.abort{
+    background:linear-gradient(135deg,#dc2626,#ef4444);
+    box-shadow:0 4px 24px rgba(220,38,38,0.3),0 0 40px rgba(220,38,38,0.1);
 }
 
 /* =========================

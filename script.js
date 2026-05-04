@@ -43,6 +43,7 @@ let running = false;
 let currentSpeed = 0;
 let targetSpeed  = 0;
 let animFrameId  = null;
+let abortCtrl    = null;
 
 /* =========================
    INTRO
@@ -51,7 +52,6 @@ function endIntro(){
     introEl.classList.add('fade-out');
     appEl.classList.remove('hidden');
     setTimeout(function(){ introEl.style.display = 'none'; }, 700);
-    fetchMeta();
 }
 
 introVideo.addEventListener('ended', endIntro);
@@ -154,11 +154,11 @@ function fetchMeta(){
 /* =========================
    PING TEST
 ========================= */
-function measurePing(){
+function measurePing(signal){
     var count = 20;
     var times = [];
 
-    return new Promise(function(resolve){
+    return new Promise(function(resolve, reject){
         function done(){
             if(!times.length){ resolve({ ping:0, jitter:0 }); return; }
             times.sort(function(a,b){ return a-b; });
@@ -177,11 +177,12 @@ function measurePing(){
 
         var idx = 0;
         function next(){
+            if(signal && signal.aborted){ reject(new DOMException('Aborted','AbortError')); return; }
             if(idx >= count){ done(); return; }
             var t0 = performance.now();
-            fetch(CF_DOWN + '?bytes=0', { mode:'cors', cache:'no-store' })
+            fetch(CF_DOWN + '?bytes=0', { mode:'cors', cache:'no-store', signal: signal })
                 .then(function(){ times.push(performance.now() - t0); })
-                .catch(function(){})
+                .catch(function(e){ if(e && e.name==='AbortError') { reject(e); return; } })
                 .then(function(){ idx++; next(); });
         }
         next();
@@ -191,22 +192,23 @@ function measurePing(){
 /* =========================
    DOWNLOAD TEST
 ========================= */
-function measureDownload(duration, onProgress){
+function measureDownload(duration, onProgress, signal){
     duration = duration || 10000;
-    return new Promise(function(resolve){
+    return new Promise(function(resolve, reject){
         var startTime = performance.now();
         var totalBytes = 0;
         var chunkSize = 1000000;
         var speeds = [];
 
         function next(){
+            if(signal && signal.aborted){ reject(new DOMException('Aborted','AbortError')); return; }
             if(performance.now() - startTime >= duration){
                 var elapsed = performance.now() - startTime;
                 resolve((totalBytes * 8) / (elapsed / 1000) / 1000000);
                 return;
             }
             var t0 = performance.now();
-            fetch(CF_DOWN + '?bytes=' + chunkSize, { mode:'cors', cache:'no-store' })
+            fetch(CF_DOWN + '?bytes=' + chunkSize, { mode:'cors', cache:'no-store', signal: signal })
                 .then(function(r){ return r.arrayBuffer(); })
                 .then(function(buf){
                     totalBytes += buf.byteLength;
@@ -220,7 +222,8 @@ function measureDownload(duration, onProgress){
                     else if(chunkTime > 3000) chunkSize = Math.max(Math.floor(chunkSize/2), 100000);
                     next();
                 })
-                .catch(function(){
+                .catch(function(e){
+                    if(e && e.name==='AbortError'){ reject(e); return; }
                     setTimeout(next, 200);
                 });
         }
@@ -231,14 +234,15 @@ function measureDownload(duration, onProgress){
 /* =========================
    UPLOAD TEST
 ========================= */
-function measureUpload(duration, onProgress){
+function measureUpload(duration, onProgress, signal){
     duration = duration || 10000;
-    return new Promise(function(resolve){
+    return new Promise(function(resolve, reject){
         var startTime = performance.now();
         var totalBytes = 0;
         var chunkSize = 500000;
 
         function next(){
+            if(signal && signal.aborted){ reject(new DOMException('Aborted','AbortError')); return; }
             if(performance.now() - startTime >= duration){
                 var elapsed = performance.now() - startTime;
                 resolve((totalBytes * 8) / (elapsed / 1000) / 1000000);
@@ -246,7 +250,7 @@ function measureUpload(duration, onProgress){
             }
             var data = new Uint8Array(chunkSize);
             var t0 = performance.now();
-            fetch(CF_UP, { method:'POST', mode:'cors', body: data })
+            fetch(CF_UP, { method:'POST', mode:'cors', body: data, signal: signal })
                 .then(function(){
                     totalBytes += chunkSize;
                     var elapsed = performance.now() - startTime;
@@ -258,7 +262,8 @@ function measureUpload(duration, onProgress){
                     else if(chunkTime > 3000) chunkSize = Math.max(Math.floor(chunkSize/2), 50000);
                     next();
                 })
-                .catch(function(){
+                .catch(function(e){
+                    if(e && e.name==='AbortError'){ reject(e); return; }
                     setTimeout(next, 200);
                 });
         }
@@ -269,27 +274,55 @@ function measureUpload(duration, onProgress){
 /* =========================
    RUN FULL TEST
 ========================= */
+function abortTest(){
+    if(abortCtrl){ abortCtrl.abort(); }
+}
+
+function resetAfterAbort(){
+    running = false;
+    abortCtrl = null;
+    statusText.textContent = 'ABORTED';
+    setGaugeTarget(0);
+    startBtn.classList.remove('abort');
+    startBtn.textContent = 'RETEST';
+    startBtn.disabled = false;
+    setTimeout(function(){ stopGaugeAnimation(); }, 500);
+}
+
 function runTest(){
-    if(running) return;
+    if(running){
+        abortTest();
+        return;
+    }
     running = true;
-    startBtn.disabled = true;
-    startBtn.textContent = 'TESTING...';
+    abortCtrl = new AbortController();
+    var signal = abortCtrl.signal;
+
+    startBtn.disabled = false;
+    startBtn.textContent = 'ABORT';
+    startBtn.classList.add('abort');
 
     /* Reset */
     dlResult.textContent     = '--';
     ulResult.textContent     = '--';
     pingResult.textContent   = '--';
     jitterResult.textContent = '--';
+    serverInfo.textContent   = '--';
+    ipInfo.textContent       = '--';
     progressFill.style.width = '0%';
 
     setGaugeTarget(0);
     startGaugeAnimation();
 
+    /* Fetch fresh server/IP first */
+    statusText.textContent = 'CONNECTING';
+    fetchMeta();
+
     /* Phase 1: Ping */
     statusText.textContent = 'PING';
     progressFill.style.width = '5%';
 
-    measurePing().then(function(pingData){
+    measurePing(signal).then(function(pingData){
         pingResult.textContent   = pingData.ping;
         jitterResult.textContent = pingData.jitter;
         progressFill.style.width = '15%';
@@ -300,7 +333,7 @@ function runTest(){
             setGaugeTarget(speed);
             dlResult.textContent = speed.toFixed(1);
             progressFill.style.width = (15 + progress * 40) + '%';
-        });
+        }, signal);
 
     }).then(function(finalDown){
         dlResult.textContent = finalDown.toFixed(2);
@@ -313,7 +346,7 @@ function runTest(){
             setGaugeTarget(speed);
             ulResult.textContent = speed.toFixed(1);
             progressFill.style.width = (55 + progress * 40) + '%';
-        });
+        }, signal);
 
     }).then(function(finalUp){
         ulResult.textContent = finalUp.toFixed(2);
@@ -323,11 +356,17 @@ function runTest(){
         statusText.textContent = 'COMPLETE';
         setGaugeTarget(0);
 
+        startBtn.classList.remove('abort');
         startBtn.textContent = 'RETEST';
         startBtn.disabled = false;
         running = false;
+        abortCtrl = null;
 
         setTimeout(function(){ stopGaugeAnimation(); }, 1000);
+    }).catch(function(e){
+        if(e && e.name === 'AbortError'){
+            resetAfterAbort();
+        }
     });
 }
 
