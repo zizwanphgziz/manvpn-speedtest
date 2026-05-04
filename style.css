@@ -136,7 +136,7 @@ html,body{
 }
 
 .logo{
-    width:clamp(280px,80vw,400px);
+    width:clamp(160px,45vw,220px);
     height:auto;
     object-fit:contain;
 }
@@ -392,7 +392,7 @@ html,body{
         padding-bottom:8px;
     }
     .brand{ padding:0; }
-    .logo{ width:220px; }
+    .logo{ width:120px; }
     .tagline{ font-size:9px; margin-top:2px; letter-spacing:3px; }
     .gauge-wrap{ max-width:280px; }
     .speed-num{ font-size:32px; }
@@ -434,7 +434,7 @@ html,body{
         gap:8px;
     }
     .brand{ width:100%; padding:0; }
-    .logo{ width:160px; }
+    .logo{ width:100px; }
     .status-section{ width:100%; }
     .gauge-wrap{
         max-width:220px;
