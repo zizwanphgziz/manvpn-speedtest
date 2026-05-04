@@ -321,8 +321,7 @@ function runTest(){
 
         /* Done */
         statusText.textContent = 'COMPLETE';
-        var finalDl = parseFloat(dlResult.textContent) || 0;
-        setGaugeTarget(finalDl);
+        setGaugeTarget(0);
 
         startBtn.textContent = 'RETEST';
         startBtn.disabled = false;
