@@ -2,96 +2,150 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="MANVPN Speedtest - Test your internet speed">
 <title>MANVPN Speedtest</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/logo.jpg">
+<link rel="apple-touch-icon" href="assets/logo.jpg">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="app">
+<!-- INTRO SPLASH -->
+<div id="intro" class="intro">
+    <video id="introVideo" autoplay playsinline webkit-playsinline muted>
+        <source src="assets/intro.mp4" type="video/mp4">
+    </video>
+    <button id="skipBtn" class="skip-btn">SKIP</button>
+</div>
 
-    <!-- TOP BAR -->
-    <div class="topbar">
-        <div class="close">✕</div>
-        <div class="title">SPEEDTEST</div>
-        <div class="menu">☰</div>
+<!-- MAIN APP -->
+<div id="app" class="app hidden">
+
+    <!-- BRAND -->
+    <div class="brand">
+        <img src="assets/logo.jpg" alt="MANVPN" class="logo">
+        <p class="tagline">NO DATA NO PROBLEM</p>
     </div>
 
-    <!-- TOP LIVE BOXES -->
-    <div class="stats-top">
-
-        <div class="box download-box">
-            <div class="box-title">DOWNLOAD Mbps</div>
-            <div class="box-num" id="downTop">--</div>
+    <!-- STATUS -->
+    <div class="status-section">
+        <div class="status-text" id="statusText">READY</div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
         </div>
-
-        <div class="box upload-box">
-            <div class="box-title">UPLOAD Mbps</div>
-            <div class="box-num" id="upTop">--</div>
-        </div>
-
     </div>
 
-    <!-- MINI INFO -->
-    <div class="mini-info">
-        <span>Ping <b id="pingValue">--</b></span>
-        <span>Jitter <b id="jitterValue">--</b></span>
-    </div>
+    <!-- GAUGE -->
+    <div class="gauge-wrap">
+        <svg viewBox="0 0 300 195" class="gauge-svg" id="gaugeSvg">
+            <defs>
+                <linearGradient id="arcGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#1c73ff"/>
+                    <stop offset="40%" stop-color="#00d4ff"/>
+                    <stop offset="100%" stop-color="#00ff88"/>
+                </linearGradient>
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="2.5" result="g"/>
+                    <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <filter id="needleGlow">
+                    <feGaussianBlur stdDeviation="4" result="g"/>
+                    <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+            </defs>
 
-    <!-- METER -->
-    <div class="meter-wrap">
+            <!-- Background arc -->
+            <path d="M 63.4 190 A 100 100 0 1 1 236.6 190"
+                  fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14" stroke-linecap="round"/>
 
-        <div class="meter-status" id="statusText">READY</div>
+            <!-- Active arc -->
+            <path id="gaugeArc" d="M 63.4 190 A 100 100 0 1 1 236.6 190"
+                  fill="none" stroke="url(#arcGrad)" stroke-width="14" stroke-linecap="round"
+                  stroke-dasharray="419" stroke-dashoffset="419" filter="url(#glow)"/>
 
-        <div class="meter">
+            <!-- Scale labels -->
+            <text x="44" y="198" class="scale-text" text-anchor="middle">0</text>
+            <text x="22" y="141" class="scale-text" text-anchor="middle">100</text>
+            <text x="41" y="78" class="scale-text" text-anchor="middle">250</text>
+            <text x="150" y="32" class="scale-text" text-anchor="middle">500</text>
+            <text x="259" y="78" class="scale-text" text-anchor="middle">750</text>
+            <text x="278" y="141" class="scale-text" text-anchor="middle">1G</text>
 
-            <!-- SCALE -->
-            <span class="mark m0">0</span>
-            <span class="mark m5">5</span>
-            <span class="mark m10">10</span>
-            <span class="mark m50">50</span>
-            <span class="mark m100">100</span>
-            <span class="mark m250">250</span>
-            <span class="mark m500">500</span>
-            <span class="mark m750">750</span>
-            <span class="mark m1000">1G</span>
+            <!-- Tick marks -->
+            <line x1="63" y1="190" x2="72" y2="185" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <line x1="30" y1="133" x2="40" y2="135" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <line x1="50" y1="72" x2="59" y2="78" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <line x1="150" y1="40" x2="150" y2="50" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <line x1="250" y1="72" x2="241" y2="78" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <line x1="270" y1="133" x2="260" y2="135" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
 
-            <!-- NEEDLE -->
-            <div class="needle" id="needle"></div>
-            <div class="needle-center"></div>
+            <!-- Needle -->
+            <line id="gaugeNeedle" x1="150" y1="140" x2="67.7" y2="187.5"
+                  stroke="white" stroke-width="2.5" stroke-linecap="round" filter="url(#needleGlow)"/>
 
-            <!-- LIVE VALUE -->
-            <div class="meter-value">
-                <span id="speedValue">0.00</span>
-                <small>Mbps</small>
-            </div>
+            <!-- Center dot -->
+            <circle cx="150" cy="140" r="5" fill="white" filter="url(#glow)"/>
+        </svg>
 
+        <!-- Speed display overlaid on gauge -->
+        <div class="speed-display">
+            <span class="speed-num" id="speedNum">0.00</span>
+            <span class="speed-unit">Mbps</span>
         </div>
-
     </div>
 
     <!-- RESULT CARDS -->
-    <div class="cards">
-
-        <div class="card">
-            <small>PING</small>
-            <strong id="pingCard">--</strong>
+    <div class="results">
+        <div class="result-card">
+            <div class="result-icon dl-icon">&#8595;</div>
+            <div class="result-label">DOWNLOAD</div>
+            <div class="result-value" id="dlResult">--</div>
+            <div class="result-unit">Mbps</div>
         </div>
-
-        <div class="card">
-            <small>DOWNLOAD</small>
-            <strong id="downValue">--</strong>
+        <div class="result-card">
+            <div class="result-icon ul-icon">&#8593;</div>
+            <div class="result-label">UPLOAD</div>
+            <div class="result-value" id="ulResult">--</div>
+            <div class="result-unit">Mbps</div>
         </div>
-
-        <div class="card">
-            <small>UPLOAD</small>
-            <strong id="upValue">--</strong>
+        <div class="result-card">
+            <div class="result-icon ping-icon">&#9679;</div>
+            <div class="result-label">PING</div>
+            <div class="result-value" id="pingResult">--</div>
+            <div class="result-unit">ms</div>
         </div>
+        <div class="result-card">
+            <div class="result-icon jitter-icon">&#8651;</div>
+            <div class="result-label">JITTER</div>
+            <div class="result-value" id="jitterResult">--</div>
+            <div class="result-unit">ms</div>
+        </div>
+    </div>
 
+    <!-- CONNECTION INFO -->
+    <div class="conn-info">
+        <div class="conn-row">
+            <span class="conn-label">ISP</span>
+            <span class="conn-value" id="ispInfo">--</span>
+        </div>
+        <div class="conn-row">
+            <span class="conn-label">SERVER</span>
+            <span class="conn-value" id="serverInfo">--</span>
+        </div>
+        <div class="conn-row">
+            <span class="conn-label">IP</span>
+            <span class="conn-value" id="ipInfo">--</span>
+        </div>
     </div>
 
     <!-- START BUTTON -->
-    <button id="startBtn">START</button>
+    <button id="startBtn" class="start-btn">START</button>
 
 </div>
 
