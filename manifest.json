@@ -1,0 +1,18 @@
+{
+    "name": "MANVPN Speedtest",
+    "short_name": "MANVPN",
+    "description": "NO DATA NO PROBLEM - Test your internet speed",
+    "start_url": ".",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#0a0e1a",
+    "theme_color": "#0a0e1a",
+    "icons": [
+        {
+            "src": "assets/logo.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg",
+            "purpose": "any"
+        }
+    ]
+}
