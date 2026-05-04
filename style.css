@@ -79,7 +79,7 @@ html,body{
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:10px;
+    gap:4px;
     opacity:1;
     transition:opacity 0.5s ease;
     position:relative;
@@ -135,7 +135,7 @@ html,body{
 
 .brand{
     text-align:center;
-    padding:6px 0 2px;
+    padding:0;
     flex-shrink:0;
 }
 
@@ -150,7 +150,7 @@ html,body{
     font-size:clamp(11px,3vw,14px);
     letter-spacing:5px;
     color:#00d4ff;
-    margin-top:8px;
+    margin-top:2px;
     font-weight:700;
     text-shadow:0 0 8px rgba(0,212,255,0.5),0 0 20px rgba(0,212,255,0.2);
     text-transform:uppercase;
@@ -386,11 +386,11 @@ html,body{
 /* Very small phones */
 @media (max-height:640px){
     .app{
-        gap:6px;
+        gap:2px;
         padding-top:8px;
         padding-bottom:8px;
     }
-    .brand{ padding:2px 0 0; }
+    .brand{ padding:0; }
     .logo{ width:220px; }
     .tagline{ font-size:9px; margin-top:2px; letter-spacing:3px; }
     .gauge-wrap{ max-width:280px; }
@@ -404,14 +404,14 @@ html,body{
 
 /* Medium phones */
 @media (min-height:700px) and (min-width:375px){
-    .app{ gap:12px; }
+    .app{ gap:6px; }
     .gauge-wrap{ max-width:340px; }
 }
 
 /* Large phones */
 @media (min-height:800px){
-    .app{ gap:14px; }
-    .brand{ padding:10px 0 4px; }
+    .app{ gap:8px; }
+    .brand{ padding:2px 0 0; }
 }
 
 /* Tablets/desktop */
