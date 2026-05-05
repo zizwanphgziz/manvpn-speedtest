@@ -401,6 +401,22 @@ try {
 } catch(e){}
 
 /* =========================
+   EXTERNAL LINKS (for WebView)
+========================= */
+function openExternal(url){
+    if(/Android/i.test(navigator.userAgent)){
+        try {
+            var intent = 'intent://' + url.replace(/^https?:\/\//, '') +
+                '#Intent;scheme=https;action=android.intent.action.VIEW;end';
+            window.location.href = intent;
+            return false;
+        } catch(e){}
+    }
+    window.open(url, '_blank', 'noopener');
+    return false;
+}
+
+/* =========================
    INIT
 ========================= */
 startBtn.addEventListener('click', runTest);
