@@ -73,32 +73,79 @@ html,body{
     width:100%;
     max-width:430px;
     margin:0 auto;
-    padding:max(12px,env(safe-area-inset-top,12px)) 16px max(12px,env(safe-area-inset-bottom,12px));
+    padding:max(8px,env(safe-area-inset-top,8px)) 16px max(8px,env(safe-area-inset-bottom,8px));
     min-height:100vh;
     min-height:100dvh;
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:4px;
+    gap:2px;
     opacity:1;
     transition:opacity 0.5s ease;
 }
 
 /* =========================
-   SOCIAL LINKS
+   CONTROLS ROW (Mode + Socials)
 ========================= */
 
-.tagline-row{
+.controls-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    width:100%;
+    flex-shrink:0;
+}
+
+.ctrl-group{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+}
+
+.ctrl-label{
+    font-family:'Orbitron',monospace;
+    font-size:8px;
+    letter-spacing:2px;
+    color:rgba(255,255,255,0.4);
+    font-weight:600;
+    text-transform:uppercase;
+}
+
+.ctrl-btns{
+    display:flex;
+    gap:6px;
+}
+
+.mode-btn{
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.08);
+    color:rgba(255,255,255,0.6);
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:8px;
-    margin-top:2px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+    padding:0;
+}
+
+.mode-btn.active{
+    border-color:#00d4ff;
+    color:#00d4ff;
+    background:rgba(0,212,255,0.15);
+    box-shadow:0 0 8px rgba(0,212,255,0.3);
+}
+
+.mode-btn:active{
+    transform:scale(0.9);
 }
 
 .social-btn{
-    width:28px;
-    height:28px;
+    width:24px;
+    height:24px;
     border-radius:50%;
     display:flex;
     align-items:center;
@@ -136,20 +183,25 @@ html,body{
 }
 
 .logo{
-    width:clamp(280px,80vw,400px);
+    width:clamp(260px,78vw,400px);
     height:auto;
     object-fit:contain;
+    border-radius:8px;
 }
 
 .tagline{
     font-family:'Orbitron',monospace;
-    font-size:clamp(10px,2.8vw,13px);
-    letter-spacing:4px;
-    color:#00d4ff;
-    margin:0;
-    font-weight:700;
-    text-shadow:0 0 8px rgba(0,212,255,0.5),0 0 20px rgba(0,212,255,0.2);
+    font-size:clamp(14px,4.5vw,20px);
+    letter-spacing:3px;
+    margin:2px 0 0;
+    font-weight:900;
     text-transform:uppercase;
+    background:linear-gradient(135deg,#ff1a1a,#ffffff,#1a1a1a,#ff1a1a);
+    background-size:200% 200%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    filter:drop-shadow(0 0 6px rgba(255,26,26,0.4));
 }
 
 /* =========================
@@ -168,7 +220,7 @@ html,body{
     letter-spacing:4px;
     color:#00d4ff;
     font-weight:600;
-    margin-bottom:6px;
+    margin-bottom:2px;
     text-shadow:0 0 8px rgba(0,212,255,0.3);
 }
 
@@ -195,7 +247,7 @@ html,body{
 .gauge-wrap{
     position:relative;
     width:100%;
-    max-width:340px;
+    max-width:280px;
     flex-shrink:0;
 }
 
@@ -249,7 +301,7 @@ html,body{
 .results{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:8px;
+    gap:6px;
     width:100%;
     flex-shrink:0;
 }
@@ -258,15 +310,15 @@ html,body{
     background:rgba(255,255,255,0.03);
     border:1px solid rgba(255,255,255,0.06);
     border-radius:14px;
-    padding:10px 8px;
+    padding:6px 6px;
     text-align:center;
     position:relative;
     overflow:hidden;
 }
 
 .result-icon{
-    font-size:16px;
-    margin-bottom:2px;
+    font-size:14px;
+    margin-bottom:1px;
     line-height:1;
 }
 
@@ -277,15 +329,15 @@ html,body{
 
 .result-label{
     font-family:'Orbitron',monospace;
-    font-size:9px;
+    font-size:8px;
     letter-spacing:2px;
     color:rgba(255,255,255,0.45);
-    margin-bottom:4px;
+    margin-bottom:2px;
 }
 
 .result-value{
     font-family:'Orbitron',monospace;
-    font-size:clamp(18px,5vw,24px);
+    font-size:clamp(16px,4.5vw,22px);
     font-weight:700;
     line-height:1.2;
     text-shadow:0 0 8px rgba(0,212,255,0.3);
@@ -307,7 +359,7 @@ html,body{
     background:rgba(255,255,255,0.02);
     border:1px solid rgba(255,255,255,0.05);
     border-radius:14px;
-    padding:10px 14px;
+    padding:6px 14px;
     flex-shrink:0;
 }
 
@@ -315,7 +367,7 @@ html,body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:5px 0;
+    padding:3px 0;
 }
 
 .conn-row + .conn-row{
@@ -347,7 +399,7 @@ html,body{
 
 .start-btn{
     width:100%;
-    height:clamp(48px,12vw,60px);
+    height:clamp(42px,10vw,52px);
     border:none;
     border-radius:16px;
     font-family:'Orbitron',monospace;
@@ -381,32 +433,140 @@ html,body{
 }
 
 /* =========================
+   DAY MODE (LIGHT THEME)
+========================= */
+
+body.day-mode{
+    background:#e8ecf2;
+    color:#1a1a2e;
+}
+
+body.day-mode .app{
+    color:#1a1a2e;
+}
+
+body.day-mode .tagline{
+    color:#0066aa;
+    text-shadow:0 0 8px rgba(0,102,170,0.3);
+}
+
+body.day-mode .status-text{
+    color:#0066aa;
+    text-shadow:0 0 6px rgba(0,102,170,0.2);
+}
+
+body.day-mode .progress-bar{
+    background:rgba(0,0,0,0.08);
+}
+
+body.day-mode .scale-text{
+    fill:rgba(0,0,0,0.45);
+}
+
+body.day-mode .speed-num{
+    color:#1a1a2e;
+    text-shadow:0 0 8px rgba(0,102,170,0.2);
+}
+
+body.day-mode .speed-unit{
+    color:rgba(0,102,170,0.6);
+}
+
+body.day-mode .result-card{
+    background:rgba(0,0,0,0.04);
+    border-color:rgba(0,0,0,0.08);
+}
+
+body.day-mode .result-label{
+    color:rgba(0,0,0,0.5);
+}
+
+body.day-mode .result-value{
+    color:#1a1a2e;
+    text-shadow:none;
+}
+
+body.day-mode .result-unit{
+    color:rgba(0,0,0,0.4);
+}
+
+body.day-mode .conn-info{
+    background:rgba(0,0,0,0.03);
+    border-color:rgba(0,0,0,0.06);
+}
+
+body.day-mode .conn-row + .conn-row{
+    border-color:rgba(0,0,0,0.06);
+}
+
+body.day-mode .conn-label{
+    color:rgba(0,102,170,0.6);
+}
+
+body.day-mode .conn-value{
+    color:rgba(0,0,0,0.7);
+}
+
+body.day-mode .start-btn{
+    background:linear-gradient(135deg,#1c73ff,#00a8e8);
+    box-shadow:0 4px 20px rgba(0,120,255,0.3);
+}
+
+body.day-mode .mode-btn{
+    border-color:rgba(0,0,0,0.15);
+    background:rgba(0,0,0,0.06);
+    color:rgba(0,0,0,0.5);
+}
+
+body.day-mode .mode-btn.active{
+    border-color:#0066aa;
+    color:#0066aa;
+    background:rgba(0,102,170,0.12);
+    box-shadow:0 0 8px rgba(0,102,170,0.2);
+}
+
+body.day-mode .ctrl-label{
+    color:rgba(0,0,0,0.4);
+}
+
+body.day-mode .gauge-svg line{
+    stroke:#1a1a2e;
+}
+
+body.day-mode .gauge-svg circle{
+    fill:#0066aa;
+}
+
+/* =========================
    RESPONSIVE
 ========================= */
 
-/* Very small phones */
-@media (max-height:640px){
+/* Small phones (iPhone SE, etc.) */
+@media (max-height:700px){
     .app{
-        gap:2px;
-        padding-top:8px;
-        padding-bottom:8px;
+        gap:1px;
+        padding-top:4px;
+        padding-bottom:4px;
     }
     .brand{ padding:0; }
-    .logo{ width:220px; }
-    .tagline{ font-size:9px; margin-top:2px; letter-spacing:3px; }
-    .gauge-wrap{ max-width:280px; }
-    .speed-num{ font-size:32px; }
-    .result-card{ padding:8px 6px; }
-    .conn-info{ padding:6px 10px; }
-    .conn-row{ padding:4px 0; }
-    .start-btn{ height:44px; }
-    .results{ gap:6px; }
+    .logo{ width:clamp(200px,65vw,280px); }
+    .tagline{ font-size:clamp(11px,3.5vw,15px); margin-top:1px; letter-spacing:2px; }
+    .gauge-wrap{ max-width:220px; }
+    .speed-num{ font-size:28px; }
+    .result-card{ padding:4px 4px; }
+    .conn-info{ padding:4px 10px; }
+    .conn-row{ padding:2px 0; }
+    .start-btn{ height:36px; font-size:12px; }
+    .results{ gap:4px; }
+    .mode-btn,.social-btn{ width:22px; height:22px; }
+    .mode-btn svg,.social-btn svg{ width:12px; height:12px; }
+    .ctrl-label{ font-size:7px; }
 }
 
 /* Medium phones */
 @media (min-height:700px) and (min-width:375px){
-    .app{ gap:6px; }
-    .gauge-wrap{ max-width:340px; }
+    .app{ gap:4px; }
+    .gauge-wrap{ max-width:300px; }
 }
 
 /* Large phones */
@@ -434,7 +594,7 @@ html,body{
         gap:8px;
     }
     .brand{ width:100%; padding:0; }
-    .logo{ width:160px; }
+    .logo{ width:clamp(160px,50vw,220px); }
     .status-section{ width:100%; }
     .gauge-wrap{
         max-width:220px;

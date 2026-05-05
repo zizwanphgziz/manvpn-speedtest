@@ -371,6 +371,36 @@ function runTest(){
 }
 
 /* =========================
+   DAY / NIGHT MODE
+========================= */
+var dayBtn   = document.getElementById('dayBtn');
+var nightBtn = document.getElementById('nightBtn');
+
+function setMode(mode){
+    if(mode === 'day'){
+        document.body.classList.add('day-mode');
+        dayBtn.classList.add('active');
+        nightBtn.classList.remove('active');
+        document.querySelector('meta[name="theme-color"]').content = '#e8ecf2';
+    } else {
+        document.body.classList.remove('day-mode');
+        nightBtn.classList.add('active');
+        dayBtn.classList.remove('active');
+        document.querySelector('meta[name="theme-color"]').content = '#0a0e1a';
+    }
+    try { localStorage.setItem('manvpn-mode', mode); } catch(e){}
+}
+
+dayBtn.addEventListener('click', function(){ setMode('day'); });
+nightBtn.addEventListener('click', function(){ setMode('night'); });
+
+/* Restore saved mode */
+try {
+    var saved = localStorage.getItem('manvpn-mode');
+    if(saved === 'day') setMode('day');
+} catch(e){}
+
+/* =========================
    INIT
 ========================= */
 startBtn.addEventListener('click', runTest);
