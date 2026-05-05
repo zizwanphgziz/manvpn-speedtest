@@ -124,7 +124,7 @@ html,body{
 }
 
 .watermark{
-    height:clamp(16px,4.5vw,22px);
+    height:clamp(28px,8vw,40px);
     width:auto;
     align-self:center;
     opacity:0.4;
