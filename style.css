@@ -118,10 +118,10 @@ html,body{
 }
 
 .watermark{
-    height:clamp(10px,3vw,16px);
+    height:clamp(12px,3.5vw,18px);
     width:auto;
     align-self:center;
-    opacity:0.25;
+    opacity:0.3;
     object-fit:contain;
     flex-shrink:0;
 }
