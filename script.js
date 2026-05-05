@@ -56,6 +56,9 @@ function endIntro(){
 
 introVideo.addEventListener('ended', endIntro);
 introVideo.addEventListener('error', endIntro);
+introVideo.addEventListener('playing', function(){
+    introVideo.classList.add('video-ready');
+});
 skipBtn.addEventListener('click', function(){
     introVideo.pause();
     endIntro();
